@@ -13,10 +13,12 @@ import {
   Link,
   InlineStack,
 } from "@shopify/polaris";
+import { metaobject } from "@shopyos/metaobjects-orm";
 import { authenticate } from "../shopify.server";
 
 export const loader = async ({ request }) => {
-  await authenticate.admin(request);
+  const { session } = await authenticate.admin(request);
+  await metaobject.schema.install(session.shop, session.accesToken);
 
   return null;
 };
